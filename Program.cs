@@ -4,7 +4,7 @@ int choice = 1; // ТЕКУЩИЙ ВЫБРАННЫЙ ЭЛЕМЕНТ
 // Список меню
 string[] ListMenu = {
     "  Задача 47: Двухмерный массив вещественных чисел.                        ",
-    "  ЗАДАЧА 50:                                                              ",
+    "  ЗАДАЧА 50: Найти элемент в двухмерном массиве.                          ",
     "  ЗАДАЧА 52:                                                              ",
     "  ЗАДАЧА HARD SORT:                                                       ",
     "  ЗАДАЧА HARD 2:                                                          ",
@@ -164,7 +164,7 @@ void FieldSize(int leng, int size) // Чтобы таблица была ров�
         Console.Write(" ");
     }
 }
-double [,] Fill2DArrayDouble(double [,] array1, double from, double to, int acc)
+double[,] Fill2DArrayDouble(double[,] array1, double from, double to, int acc)
 {
     for (int i = 0; i < array1.GetLength(0); i++)
     {
@@ -186,42 +186,94 @@ double [,] Fill2DArrayDouble(double [,] array1, double from, double to, int acc)
 }
 void Print2DArrayDouble(double[,] array1)
 {
-    for (int k = 0; k < array1.GetLength(1); k++)
+    int lng = 8;
+    FieldSize(0, lng);
+    for (int jj = 0; jj < array1.GetLength(1); jj++)
     {
-        Console.Write("────────────");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write($"<{jj}>");
+        FieldSize(Convert.ToString(jj).Length, lng-2);
+        Console.ForegroundColor = ConsoleColor.Green;
     }
     Console.WriteLine();
     for (int i = 0; i < array1.GetLength(0); i++)
     {
         for (int j = 0; j < array1.GetLength(1); j++)
         {
-            if (j == array1.GetLength(1) - 1)
+            if (j == 0)
             {
-                Console.Write($" │ {array1[i, j]}");
-                FieldSize(Convert.ToString(array1[i, j]).Length , 8);
-                Console.Write(" │\n");
-            }
-            else if (j == 0)
-            {
-                Console.Write($"│ {array1[i, j]}");
-                FieldSize(Convert.ToString(array1[i, j]).Length, 8);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write($"<{i}>");
+                FieldSize(Convert.ToString(i).Length, lng-2);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"{array1[i, j]}");
+                FieldSize(Convert.ToString(array1[i, j]).Length, lng);
             }
             else
             {
-                Console.Write($" │ {array1[i, j]}");
-                FieldSize(Convert.ToString(array1[i, j]).Length, 8);
+                Console.Write($"{array1[i, j]}");
+                FieldSize(Convert.ToString(array1[i, j]).Length, lng);
             }
-        }
-        for (int k = 0; k < array1.GetLength(1); k++)
-        {
-            Console.Write("────────────");
         }
         Console.WriteLine();
     }
 }
 
 // 2 Задача //
-
+int[,] Fill2dArray(int[,] result, int x, int y)
+{
+    for (int i = 0; i < result.GetLength(0); i++)
+    {
+        for (int j = 0; j < result.GetLength(1); j++)
+        {
+        retry:
+            int tempnum1 = new Random().Next(x, y);
+            for (int i1 = 0; i1 < result.GetLength(0); i1++)
+            {
+                for (int j1 = 0; j1 < result.GetLength(1); j1++)
+                {
+                    if (tempnum1 == result[i1, j1]) goto retry;
+                }
+            }
+            result[i, j] = tempnum1;
+        }
+    }
+    return (result);
+}
+void Print2DArray(int[,] array1)
+{
+    int lng = 8;
+    FieldSize(0, lng);
+    for (int jj = 0; jj < array1.GetLength(1); jj++)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write($"<{jj}>");
+        FieldSize(Convert.ToString(jj).Length, lng-2);
+        Console.ForegroundColor = ConsoleColor.Green;
+    }
+    Console.WriteLine();
+    for (int i = 0; i < array1.GetLength(0); i++)
+    {
+        for (int j = 0; j < array1.GetLength(1); j++)
+        {
+            if (j == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write($"<{i}>");
+                FieldSize(Convert.ToString(i).Length, lng-2);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"{array1[i, j]}");
+                FieldSize(Convert.ToString(array1[i, j]).Length, lng);
+            }
+            else
+            {
+                Console.Write($"{array1[i, j]}");
+                FieldSize(Convert.ToString(array1[i, j]).Length, lng);
+            }
+        }
+        Console.WriteLine();
+    }
+}
 
 // 3 Задача //
 
@@ -297,13 +349,13 @@ restart:
                 double yy = GetDouble();
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("Задайте количество цифр после запятой для массива...");
-                int Accuracy = GetNum();                
+                int Accuracy = GetNum();
                 double[,] array2d = new double[xm, xn];
                 array2d = Fill2DArrayDouble(array2d, xx, yy, Accuracy);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
                 $"Сгенерирован вещественных целых чисел, размером [{xm}, {xn}]\n\n");
-                Print2DArrayDouble(array2d);                
+                Print2DArrayDouble(array2d);
                 Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
                 pause();
                 goto restart;
