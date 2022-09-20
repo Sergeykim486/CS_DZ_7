@@ -3,7 +3,7 @@
 int choice = 1; // ТЕКУЩИЙ ВЫБРАННЫЙ ЭЛЕМЕНТ
 // Список меню
 string[] ListMenu = {
-    "  Задача 47:                                                              ",
+    "  Задача 47: Двухмерный массив вещественных чисел.                        ",
     "  ЗАДАЧА 50:                                                              ",
     "  ЗАДАЧА 52:                                                              ",
     "  ЗАДАЧА HARD SORT:                                                       ",
@@ -157,8 +157,71 @@ AskAgayn:
 // ═══════════════════════════════ ДОМАШНЕЕ ЗАДАНИЕ ═══════════════════════════════
 
 // 1 Задача //
+void FieldSize(int leng, int size) // Чтобы таблица была ровной
+{
+    for (int i = 0; i < size - leng; i++)
+    {
+        Console.Write(" ");
+    }
+}
+double [,] Fill2DArrayDouble(double [,] array1, double from, double to, int acc)
+{
+    for (int i = 0; i < array1.GetLength(0); i++)
+    {
+        for (int j = 0; j < array1.GetLength(1); j++)
+        {
+        retry:
+            double tempnum1 = Math.Round(from + new Random().NextDouble() * (to - from), acc);
+            for (int i1 = 0; i1 < array1.GetLength(0); i1++)
+            {
+                for (int j1 = 0; j1 < array1.GetLength(1); j1++)
+                {
+                    if (tempnum1 == array1[i1, j1]) goto retry;
+                }
+            }
+            array1[i, j] = tempnum1;
+        }
+    }
+    return (array1);
+}
+void Print2DArrayDouble(double[,] array1)
+{
+    for (int k = 0; k < array1.GetLength(1); k++)
+    {
+        Console.Write("────────────");
+    }
+    Console.WriteLine();
+    for (int i = 0; i < array1.GetLength(0); i++)
+    {
+        for (int j = 0; j < array1.GetLength(1); j++)
+        {
+            if (j == array1.GetLength(1) - 1)
+            {
+                Console.Write($" │ {array1[i, j]}");
+                FieldSize(Convert.ToString(array1[i, j]).Length , 8);
+                Console.Write(" │\n");
+            }
+            else if (j == 0)
+            {
+                Console.Write($"│ {array1[i, j]}");
+                FieldSize(Convert.ToString(array1[i, j]).Length, 8);
+            }
+            else
+            {
+                Console.Write($" │ {array1[i, j]}");
+                FieldSize(Convert.ToString(array1[i, j]).Length, 8);
+            }
+        }
+        for (int k = 0; k < array1.GetLength(1); k++)
+        {
+            Console.Write("────────────");
+        }
+        Console.WriteLine();
+    }
+}
 
 // 2 Задача //
+
 
 // 3 Задача //
 
@@ -216,6 +279,32 @@ restart:
         switch (choice)
         {
             case 1:
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Задача 47. Задайте двумерный массив размером m×n, заполненный случайными вещественными числами.");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("Укажите размерность двумерного массива [m, n]");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Укажите размер [m]...");
+                int xm = GetNum();
+                Console.WriteLine("Укажите размер [n]...");
+                int xn = GetNum();
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
+                Console.WriteLine("Укажите начало диапазона...");
+                double xx = GetDouble();
+                Console.WriteLine("Укажите конец диапазона...");
+                double yy = GetDouble();
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("Задайте количество цифр после запятой для массива...");
+                int Accuracy = GetNum();                
+                double[,] array2d = new double[xm, xn];
+                array2d = Fill2DArrayDouble(array2d, xx, yy, Accuracy);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
+                $"Сгенерирован вещественных целых чисел, размером [{xm}, {xn}]\n\n");
+                Print2DArrayDouble(array2d);                
+                Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
                 pause();
                 goto restart;
             case 2:
