@@ -5,277 +5,320 @@ int choice = 1; // ТЕКУЩИЙ ВЫБРАННЫЙ ЭЛЕМЕНТ
 string[] ListMenu = {
     "  Задача 47: Двухмерный массив вещественных чисел.                        ",
     "  ЗАДАЧА 50: Найти элемент в двухмерном массиве.                          ",
-    "  ЗАДАЧА 52:                                                              ",
+    "  ЗАДАЧА 52: Среднее арифметическое колонок массива.                      ",
     "  ЗАДАЧА HARD SORT:                                                       ",
     "  ЗАДАЧА HARD 2:                                                          ",
     "  ВЫХОД ИЗ ПРОГРАММЫ                                                      "};
 Console.ForegroundColor = ConsoleColor.White;
 Console.BackgroundColor = ConsoleColor.Black;
 void menu() // Функция выводит главное меню на экран консоли
-{
-    int CurrentLine = 1;
-    Console.ForegroundColor = ConsoleColor.White;
-    Console.BackgroundColor = ConsoleColor.Black;
-    Console.WriteLine(choice);
-    int i = 0;
-    Console.Clear();
-    Console.ForegroundColor = ConsoleColor.White;
-    Console.WriteLine("═══════════════════════  Г Л А В Н О Е   М Е Н Ю  ════════════════════════\n");
-    Console.ForegroundColor = ConsoleColor.White;
-    while (i < ListMenu.Length)
     {
-        CurrentLine = i + 1;
-        if (choice == CurrentLine)
+        int CurrentLine = 1;
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.BackgroundColor = ConsoleColor.Black;
+        Console.WriteLine(choice);
+        int i = 0;
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("═══════════════════════  Г Л А В Н О Е   М Е Н Ю  ════════════════════════\n");
+        Console.ForegroundColor = ConsoleColor.White;
+        while (i < ListMenu.Length)
         {
-            if (i == ListMenu.Length - 1)
+            CurrentLine = i + 1;
+            if (choice == CurrentLine)
             {
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.BackgroundColor = ConsoleColor.DarkRed;
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.BackgroundColor = ConsoleColor.Yellow;
-            }
-            Console.Write($"{ListMenu[i].ToUpper()}\n");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.BackgroundColor = ConsoleColor.Black;
-        }
-        else
-        {
-            if (i == ListMenu.Length - 1)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.BackgroundColor = ConsoleColor.Black;
-            }
-            else
-            {
+                if (i == ListMenu.Length - 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.DarkRed;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.Yellow;
+                }
+                Console.Write($"{ListMenu[i].ToUpper()}\n");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.BackgroundColor = ConsoleColor.Black;
             }
-            Console.Write($"{ListMenu[i]}\n");
+            else
+            {
+                if (i == ListMenu.Length - 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                }
+                Console.Write($"{ListMenu[i]}\n");
+            }
+            i++;
         }
-        i++;
+        Console.ForegroundColor = ConsoleColor.DarkCyan;
+        Console.WriteLine("\n" +
+        "╔════════════════════════════════════════════════════════╤═══════════════╗\n" +
+        "║  Используйте [стрелки] для навигации.                  │   ▲ : Вверх   ║\n" +
+        "║  [ENTER] - Выбор выделенного пункта                    │   ▼ : Вниз    ║\n" +
+        "╚════════════════════════════════════════════════════════╧═══════════════╝\n");
+        Console.BackgroundColor = ConsoleColor.Black;
     }
-    Console.ForegroundColor = ConsoleColor.DarkCyan;
-    Console.WriteLine("\n" +
-    "╔════════════════════════════════════════════════════════╤═══════════════╗\n" +
-    "║  Используйте [стрелки] для навигации.                  │   ▲ : Вверх   ║\n" +
-    "║  [ENTER] - Выбор выделенного пункта                    │   ▼ : Вниз    ║\n" +
-    "╚════════════════════════════════════════════════════════╧═══════════════╝\n");
-    Console.BackgroundColor = ConsoleColor.Black;
-}
 int GetNum() // Запрос на ввод целого числа
-{
-    Console.ForegroundColor = ConsoleColor.White;
-    Console.Write("_______________________________________________\n" +
-    "Введите целое число... ");
-    int result1 = Convert.ToInt32(Console.ReadLine());
-    return result1;
-}
+    {
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.Write("_______________________________________________\n" +
+        "Введите целое число... ");
+        int result1 = Convert.ToInt32(Console.ReadLine());
+        return result1;
+    }
 double GetDouble() // Запрос на ввод Вещественного числа
-{
-    Console.ForegroundColor = ConsoleColor.White;
-    Console.Write("_______________________________________________\n" +
-    "Введите целое или дробное число... ");
-    double result1 = Convert.ToDouble(Console.ReadLine().Replace('.', ','));
-    return result1;
-}
+    {
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.Write("_______________________________________________\n" +
+        "Введите целое или дробное число... ");
+        double result1 = Convert.ToDouble(Console.ReadLine().Replace('.', ','));
+        return result1;
+    }
 void ErrorCatch() // Функция обрабатывает ошибку, выдает сообщение и запускает программу с начала
-{
-    Console.Clear();
-    Console.ForegroundColor = ConsoleColor.Red;
-    Console.WriteLine("" +
-    "  ╔═ О Ш И Б К А  В В О Д А ════════════════════════════╗\n" +
-    "  ║  Возможно вы ввели не верные данные.                ║\n" +
-    "  ║  Программа будет перезапущена...                    ║\n" +
-    "  ╚═════════════════════════════════════════════════════╝\n");
-    Console.ForegroundColor = ConsoleColor.White;
-    pause();
-}
-void pause() // Функция паузы, для чтения результатов
-{
-    Console.ForegroundColor = ConsoleColor.Cyan;
-    Console.WriteLine("" +
-    "  ╔═════════════════════════════════════════════════════╗\n" +
-    "  ║  ЧТОБЫ ПРОДОЛЖИТЬ НАЖМИТЕ ЛЮБУЮ КЛАВИШУ...          ║\n" +
-    "  ╚═════════════════════════════════════════════════════╝\n");
-    ConsoleKeyInfo key;
-    key = Console.ReadKey();
-    try
-    {
-        main();
-    }
-    catch
-    {
-        ErrorCatch();
-    }
-}
-void ext() // Функция задает пользователю вопрос хочет ли он выйти из программы и закрывает ее если ответ да
-{
-AskAgayn:
-    Console.Clear();
-    Console.WriteLine();
-    Console.WriteLine();
-    Console.ForegroundColor = ConsoleColor.White;
-    Console.BackgroundColor = ConsoleColor.DarkRed;
-    Console.WriteLine("  ╔═ В Ы Х О Д   И З   П Р О Г Р А М М Ы ═══════════════╗  \n" +
-    "  ║      Вы уверены что хотите закрыть программу?       ║  \n" +
-    "  ║              [ENTER] Да     [ESC] Нет               ║  \n" +
-    "  ╚═════════════════════════════════════════════════════╝  \n");
-    Console.ForegroundColor = ConsoleColor.White;
-    Console.BackgroundColor = ConsoleColor.Black;
-    ConsoleKeyInfo key;
-    key = Console.ReadKey();
-    if (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Escape)
     {
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("" +
         "  ╔═ О Ш И Б К А  В В О Д А ════════════════════════════╗\n" +
-        "  ║  Вам нужно нажать [ENTER] или [ESC].                ║\n" +
+        "  ║  Возможно вы ввели не верные данные.                ║\n" +
+        "  ║  Программа будет перезапущена...                    ║\n" +
         "  ╚═════════════════════════════════════════════════════╝\n");
+        Console.ForegroundColor = ConsoleColor.White;
+        pause();
+    }
+void pause() // Функция паузы, для чтения результатов
+    {
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine("" +
         "  ╔═════════════════════════════════════════════════════╗\n" +
         "  ║  ЧТОБЫ ПРОДОЛЖИТЬ НАЖМИТЕ ЛЮБУЮ КЛАВИШУ...          ║\n" +
         "  ╚═════════════════════════════════════════════════════╝\n");
-        ConsoleKeyInfo key1;
-        key1 = Console.ReadKey();
-        Console.ForegroundColor = ConsoleColor.White;
-        goto AskAgayn;
+        ConsoleKeyInfo key;
+        key = Console.ReadKey();
+        try
+        {
+            main();
+        }
+        catch
+        {
+            ErrorCatch();
+        }
     }
-    else if (key.Key == ConsoleKey.Escape) main();
-    else if (key.Key == ConsoleKey.Enter)
+void ext() // Функция задает пользователю вопрос хочет ли он выйти из программы и закрывает ее если ответ да
     {
+    AskAgayn:
         Console.Clear();
-        System.Environment.Exit(0);
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.BackgroundColor = ConsoleColor.DarkRed;
+        Console.WriteLine("  ╔═ В Ы Х О Д   И З   П Р О Г Р А М М Ы ═══════════════╗  \n" +
+        "  ║      Вы уверены что хотите закрыть программу?       ║  \n" +
+        "  ║              [ENTER] Да     [ESC] Нет               ║  \n" +
+        "  ╚═════════════════════════════════════════════════════╝  \n");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.BackgroundColor = ConsoleColor.Black;
+        ConsoleKeyInfo key;
+        key = Console.ReadKey();
+        if (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Escape)
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("" +
+            "  ╔═ О Ш И Б К А  В В О Д А ════════════════════════════╗\n" +
+            "  ║  Вам нужно нажать [ENTER] или [ESC].                ║\n" +
+            "  ╚═════════════════════════════════════════════════════╝\n");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("" +
+            "  ╔═════════════════════════════════════════════════════╗\n" +
+            "  ║  ЧТОБЫ ПРОДОЛЖИТЬ НАЖМИТЕ ЛЮБУЮ КЛАВИШУ...          ║\n" +
+            "  ╚═════════════════════════════════════════════════════╝\n");
+            ConsoleKeyInfo key1;
+            key1 = Console.ReadKey();
+            Console.ForegroundColor = ConsoleColor.White;
+            goto AskAgayn;
+        }
+        else if (key.Key == ConsoleKey.Escape) main();
+        else if (key.Key == ConsoleKey.Enter)
+        {
+            Console.Clear();
+            System.Environment.Exit(0);
+        }
+        else main();
     }
-    else main();
-}
+void PrintArray(double[] array1) // Вывести на экран массив
+    {
+        for (int i = 0; i < array1.Length; i++)
+        {
+            if (i == 0)
+            {
+                Console.Write($"Average  ");
+                Console.Write(array1[i]);
+                FieldSize(Convert.ToString(array1[i]).Length, 9);
+            }
+            else
+            {
+                Console.Write(array1[i]);
+                FieldSize(Convert.ToString(array1[i]).Length, 9);
+            }
+        }
+    }
 
 // ═══════════════════════════════ ДОМАШНЕЕ ЗАДАНИЕ ═══════════════════════════════
 
 // 1 Задача //
 void FieldSize(int leng, int size) // Чтобы таблица была ровной
-{
-    for (int i = 0; i < size - leng; i++)
     {
-        Console.Write(" ");
-    }
-}
-double[,] Fill2DArrayDouble(double[,] array1, double from, double to, int acc)
-{
-    for (int i = 0; i < array1.GetLength(0); i++)
-    {
-        for (int j = 0; j < array1.GetLength(1); j++)
+        for (int i = 0; i < size - leng; i++)
         {
-        retry:
-            double tempnum1 = Math.Round(from + new Random().NextDouble() * (to - from), acc);
-            for (int i1 = 0; i1 < array1.GetLength(0); i1++)
-            {
-                for (int j1 = 0; j1 < array1.GetLength(1); j1++)
-                {
-                    if (tempnum1 == array1[i1, j1]) goto retry;
-                }
-            }
-            array1[i, j] = tempnum1;
+            Console.Write(" ");
         }
     }
-    return (array1);
-}
-void Print2DArrayDouble(double[,] array1)
-{
-    int lng = 8;
-    FieldSize(0, lng);
-    for (int jj = 0; jj < array1.GetLength(1); jj++)
+double[,] Fill2DArrayDouble(double[,] array1, double from, double to, int acc)
     {
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write($"<{jj}>");
-        FieldSize(Convert.ToString(jj).Length, lng-2);
-        Console.ForegroundColor = ConsoleColor.Green;
-    }
-    Console.WriteLine();
-    for (int i = 0; i < array1.GetLength(0); i++)
-    {
-        for (int j = 0; j < array1.GetLength(1); j++)
+        for (int i = 0; i < array1.GetLength(0); i++)
         {
-            if (j == 0)
+            for (int j = 0; j < array1.GetLength(1); j++)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write($"<{i}>");
-                FieldSize(Convert.ToString(i).Length, lng-2);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write($"{array1[i, j]}");
-                FieldSize(Convert.ToString(array1[i, j]).Length, lng);
+            retry:
+                double tempnum1 = Math.Round(from + new Random().NextDouble() * (to - from), acc);
+                for (int i1 = 0; i1 < array1.GetLength(0); i1++)
+                {
+                    for (int j1 = 0; j1 < array1.GetLength(1); j1++)
+                    {
+                        if (tempnum1 == array1[i1, j1]) goto retry;
+                    }
+                }
+                array1[i, j] = tempnum1;
             }
-            else
-            {
-                Console.Write($"{array1[i, j]}");
-                FieldSize(Convert.ToString(array1[i, j]).Length, lng);
-            }
+        }
+        return (array1);
+    }
+void Print2DArrayDouble(double[,] array1)
+    {
+        int lng = 8;
+        FieldSize(0, lng);
+        for (int jj = 0; jj < array1.GetLength(1); jj++)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write($"<{jj}>");
+            FieldSize(Convert.ToString(jj).Length, lng-2);
+            Console.ForegroundColor = ConsoleColor.Green;
         }
         Console.WriteLine();
+        for (int i = 0; i < array1.GetLength(0); i++)
+        {
+            for (int j = 0; j < array1.GetLength(1); j++)
+            {
+                if (j == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write($"<{i}>");
+                    FieldSize(Convert.ToString(i).Length, lng-2);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write($"{array1[i, j]}");
+                    FieldSize(Convert.ToString(array1[i, j]).Length, lng);
+                }
+                else
+                {
+                    Console.Write($"{array1[i, j]}");
+                    FieldSize(Convert.ToString(array1[i, j]).Length, lng);
+                }
+            }
+            Console.WriteLine();
+        }
     }
-}
 
 // 2 Задача //
-int[,] Fill2dArray(int[,] result, int x, int y)
-{
-    for (int i = 0; i < result.GetLength(0); i++)
+int[,] Fill2dArray(int m, int n, int x, int y)
     {
-        for (int j = 0; j < result.GetLength(1); j++)
+        int [,] result = new int [m, n];
+        for (int i = 0; i < result.GetLength(0); i++)
         {
-        retry:
-            int tempnum1 = new Random().Next(x, y);
-            for (int i1 = 0; i1 < result.GetLength(0); i1++)
+            for (int j = 0; j < result.GetLength(1); j++)
             {
-                for (int j1 = 0; j1 < result.GetLength(1); j1++)
+            retry:
+                int tempnum1 = new Random().Next(x, y);
+                for (int i1 = 0; i1 < result.GetLength(0); i1++)
                 {
-                    if (tempnum1 == result[i1, j1]) goto retry;
+                    for (int j1 = 0; j1 < result.GetLength(1); j1++)
+                    {
+                        if (tempnum1 == result[i1, j1]) goto retry;
+                    }
                 }
+                result[i, j] = tempnum1;
             }
-            result[i, j] = tempnum1;
         }
+        return (result);
     }
-    return (result);
-}
 void Print2DArray(int[,] array1)
-{
-    int lng = 8;
-    FieldSize(0, lng);
-    for (int jj = 0; jj < array1.GetLength(1); jj++)
     {
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write($"<{jj}>");
-        FieldSize(Convert.ToString(jj).Length, lng-2);
-        Console.ForegroundColor = ConsoleColor.Green;
-    }
-    Console.WriteLine();
-    for (int i = 0; i < array1.GetLength(0); i++)
-    {
-        for (int j = 0; j < array1.GetLength(1); j++)
+        int lng = 9;
+        FieldSize(0, lng);
+        for (int jj = 0; jj < array1.GetLength(1); jj++)
         {
-            if (j == 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write($"<{i}>");
-                FieldSize(Convert.ToString(i).Length, lng-2);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write($"{array1[i, j]}");
-                FieldSize(Convert.ToString(array1[i, j]).Length, lng);
-            }
-            else
-            {
-                Console.Write($"{array1[i, j]}");
-                FieldSize(Convert.ToString(array1[i, j]).Length, lng);
-            }
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write($"<{jj}>");
+            FieldSize(Convert.ToString(jj).Length, lng-2);
+            Console.ForegroundColor = ConsoleColor.Green;
         }
         Console.WriteLine();
+        for (int i = 0; i < array1.GetLength(0); i++)
+        {
+            for (int j = 0; j < array1.GetLength(1); j++)
+            {
+                if (j == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write($"<{i}>");
+                    FieldSize(Convert.ToString(i).Length, lng-2);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write($"{array1[i, j]}");
+                    FieldSize(Convert.ToString(array1[i, j]).Length, lng);
+                }
+                else
+                {
+                    Console.Write($"{array1[i, j]}");
+                    FieldSize(Convert.ToString(array1[i, j]).Length, lng);
+                }
+            }
+            Console.WriteLine();
+        }
     }
-}
+void FindElement(int[,] array1, int m, int n)
+    {
+        if (m > array1.GetLength(0) - 1^ n > array1.GetLength(1) - 1)
+        {
+            Console.WriteLine("Такого элемента не существует!");
+        }
+        else
+        {
+            Console.WriteLine($"Элемент {m}, {n} найден, и равен {array1[m, n]}");
+        }
+    }
 
 // 3 Задача //
+double [] AverageCoulm2DArray(int [,] array1)
+    {
+        double [] result = new double [array1.GetLength(1)];
+        for (int j = 0; j < array1.GetLength(1); j++)
+        {
+            for (int i = 0; i < array1.GetLength(0); i++)
+            {
+                result[j] = result[j] + array1[i,j]; 
+            }
+            result[j] = Math.Round((result[j] / array1.GetLength(0)), 2);
+        }
+        return (result);
+    }
+
 
 // 4 Задача //
 
@@ -286,109 +329,180 @@ void Print2DArray(int[,] array1)
 
 // ВЫПОЛНЕНИЕ ПРОГРАММЫ И ОТСЛЕЖИВАНИЕ НАЖАТИЯ КЛАВИШ
 void main()
-{
-restart:
-    menu();
-    ConsoleKeyInfo key;
-    key = Console.ReadKey();
-    if (key.Key == ConsoleKey.UpArrow)
     {
-        if (choice <= ListMenu.Length)
+    restart:
+        menu();
+        ConsoleKeyInfo key;
+        key = Console.ReadKey();
+        if (key.Key == ConsoleKey.UpArrow)
         {
-            if (choice == 1)
+            if (choice <= ListMenu.Length)
             {
-                choice = ListMenu.Length;
-                goto restart;
+                if (choice == 1)
+                {
+                    choice = ListMenu.Length;
+                    goto restart;
+                }
+                else
+                {
+                    choice = choice - 1;
+                    goto restart;
+                }
             }
-            else
+            else goto restart;
+        }
+        else if (key.Key == ConsoleKey.DownArrow)
+        {
+            if (choice >= 1)
             {
-                choice = choice - 1;
-                goto restart;
+                if (choice == ListMenu.Length)
+                {
+                    choice = 1;
+                    goto restart;
+                }
+                else
+                {
+                    choice = choice + 1;
+                    goto restart;
+                }
+            }
+            else goto restart;
+        }
+        else if (key.Key == ConsoleKey.Enter)
+        {
+            // Здесь объявляются функции которые программа выполнит при выборе того или иного пункта меню
+            switch (choice)
+            {
+                case 1:
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Задача 47. Задайте двумерный массив размером m×n, заполненный случайными вещественными числами.");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Укажите размерность двумерного массива [m, n]");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Укажите размер [m]...");
+                    int xm = GetNum();
+                    Console.WriteLine("Укажите размер [n]...");
+                    int xn = GetNum();
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
+                    Console.WriteLine("Укажите начало диапазона...");
+                    double xx = GetDouble();
+                    Console.WriteLine("Укажите конец диапазона...");
+                    double yy = GetDouble();
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Задайте количество цифр после запятой для массива...");
+                    int Accuracy = GetNum();
+                    double[,] array2d = new double[xm, xn];
+                    array2d = Fill2DArrayDouble(array2d, xx, yy, Accuracy);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
+                    $"Сгенерирован массив вещественных чисел, размером [{xm}, {xn}]\n\n");
+                    Print2DArrayDouble(array2d);
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
+                    pause();
+                    goto restart;
+                case 2:
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Задача 50. Напишите программу, которая на вход принимает позиции элемента в двумерном\n"+
+                    "массиве, и возвращает значение этого элемента или же указание, что такого элемента нет."+
+                    "Например, задан массив:");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Укажите размерность двумерного массива [m, n]");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Укажите размер [m]...");
+                    int xm1 = GetNum();
+                    Console.WriteLine("Укажите размер [n]...");
+                    int xn1 = GetNum();
+                    EnterAgayn:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
+                    Console.WriteLine("Укажите начало диапазона...");
+                    int xx1 = GetNum();
+                    Console.WriteLine("Укажите конец диапазона...");
+                    int yy1 = GetNum();
+                    if (yy1 - xx1 <= xm1 * xn1)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Диапазон генерируемых чисел меньше чем размер массива. Повторите ввод...");
+                        goto EnterAgayn;
+                    }
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Укажите позицию искомого элемента...");
+                    Console.WriteLine("Позиция m...");
+                    int Pos1 = GetNum();
+                    Console.WriteLine("Позиция n...");
+                    int Pos2 = GetNum();
+                    int[,] array2d1 = Fill2dArray(xm1, xn1, xx1, yy1);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
+                    $"Сгенерирован вещественных целых чисел, размером [{xm1}, {xn1}]\n\n");
+                    Print2DArray(array2d1);
+                    FindElement(array2d1, Pos1, Pos2);
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
+                    pause();
+                    goto restart;
+                case 3:
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Задача 50. Напишите программу, которая на вход принимает позиции элемента в двумерном\n"+
+                    "массиве, и возвращает значение этого элемента или же указание, что такого элемента нет."+
+                    "Например, задан массив:");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Укажите размерность двумерного массива [m, n]");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Укажите размер [m]...");
+                    int xm2 = GetNum();
+                    Console.WriteLine("Укажите размер [n]...");
+                    int xn2 = GetNum();
+                    EnterAgayn1:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
+                    Console.WriteLine("Укажите начало диапазона...");
+                    int xx2 = GetNum();
+                    Console.WriteLine("Укажите конец диапазона...");
+                    int yy2 = GetNum();
+                    if (yy2 - xx2 <= xm2 * xn2)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Диапазон генерируемых чисел меньше чем размер массива. Повторите ввод...");
+                        goto EnterAgayn1;
+                    }            
+                    int[,] array2d2 = Fill2dArray(xm2, xn2, xx2, yy2);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
+                    $"Сгенерирован вещественных целых чисел, размером [{xm2}, {xn2}]\n\n");
+                    Print2DArray(array2d2);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    PrintArray(AverageCoulm2DArray(array2d2));
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");                    pause();
+                    goto restart;
+                case 4:
+                    pause();
+                    goto restart;
+                case 5:
+                    pause();
+                    goto restart;
+                case 6:
+                    ext();
+                    goto restart;
             }
         }
         else goto restart;
     }
-    else if (key.Key == ConsoleKey.DownArrow)
-    {
-        if (choice >= 1)
-        {
-            if (choice == ListMenu.Length)
-            {
-                choice = 1;
-                goto restart;
-            }
-            else
-            {
-                choice = choice + 1;
-                goto restart;
-            }
-        }
-        else goto restart;
-    }
-    else if (key.Key == ConsoleKey.Enter)
-    {
-        // Здесь объявляются функции которые программа выполнит при выборе того или иного пункта меню
-        switch (choice)
-        {
-            case 1:
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Задача 47. Задайте двумерный массив размером m×n, заполненный случайными вещественными числами.");
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Укажите размерность двумерного массива [m, n]");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Укажите размер [m]...");
-                int xm = GetNum();
-                Console.WriteLine("Укажите размер [n]...");
-                int xn = GetNum();
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
-                Console.WriteLine("Укажите начало диапазона...");
-                double xx = GetDouble();
-                Console.WriteLine("Укажите конец диапазона...");
-                double yy = GetDouble();
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Задайте количество цифр после запятой для массива...");
-                int Accuracy = GetNum();
-                double[,] array2d = new double[xm, xn];
-                array2d = Fill2DArrayDouble(array2d, xx, yy, Accuracy);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
-                $"Сгенерирован вещественных целых чисел, размером [{xm}, {xn}]\n\n");
-                Print2DArrayDouble(array2d);
-                Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
-                pause();
-                goto restart;
-            case 2:
-                pause();
-                goto restart;
-            case 3:
-                pause();
-                goto restart;
-            case 4:
-                pause();
-                goto restart;
-            case 5:
-                pause();
-                goto restart;
-            case 6:
-                ext();
-                goto restart;
-        }
-    }
-    else goto restart;
-}
 
 // ═══════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 // ═══════════════════════════════ Запуск обработки меню и выбранного элемента ═══════════════════════════════
 
 try
-{
-    main();
-}
+    {
+        main();
+    }
 
 catch
-{
-    ErrorCatch();
-}
+    {
+        ErrorCatch();
+    }
