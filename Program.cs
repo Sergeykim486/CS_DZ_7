@@ -369,8 +369,64 @@ int[,] Sort2DArray(int[,] array1)
     }
     return (array1);
 }
-
 // 5 Задача //
+int FindArrayElement(int[] array1, int WhatToFind)
+{
+    int result = 0;
+    for (int i = 0; i < array1.Length; i++)
+    {
+        if (WhatToFind == array1[i]) result = 1;
+    }
+    Console.WriteLine($"Searching {WhatToFind} - Find {result}");
+    return (result);
+
+}
+int[,] Mix2DArray(int[,] array1)
+{
+    int[] TempArray = new int[array1.GetLength(0) * array1.GetLength(1)];
+    int TempIndex = 0;
+    for (int i = 0; i < array1.GetLength(0); i++)
+    {
+        for (int j = 0; j < array1.GetLength(1); j++)
+        {
+            TempArray[TempIndex] = array1[i, j];
+            TempIndex++;
+        }
+    }
+    int[] Changed = new int[TempArray.Length];
+    for (int tmpi = 0; tmpi < TempArray.Length / 2; tmpi++)
+    {
+        Random rnd = new Random();
+        Console.WriteLine($"Строка {tmpi}");
+    rnd1aAgayn:
+        Console.Write("rnd1 ");
+        int rnd1 = Convert.ToInt32(rnd.Next(TempArray.Length));
+        if (FindArrayElement(Changed, rnd1) == 1) goto rnd1aAgayn;
+        Changed[tmpi] = rnd1;
+    rnd2aAgayn:
+        Console.Write("rnd2 ");
+        int rnd2 = Convert.ToInt32(rnd.Next(TempArray.Length));
+        if (FindArrayElement(Changed, rnd2) == 1) goto rnd2aAgayn;
+
+        Console.WriteLine($"{rnd1} <-> {rnd2}");
+        Changed[tmpi + TempArray.Length / 2] = rnd2;
+        Console.WriteLine($"Saved {Changed[tmpi + TempArray.Length / 2]} - to array");
+        int tmp = TempArray[rnd1];
+        TempArray[rnd1] = TempArray[rnd2];
+        TempArray[rnd2] = tmp;
+        Console.WriteLine($"       changed  {tmpi} <----> {tmpi + TempArray.Length / 2}");
+    }
+    TempIndex = 0;
+    for (int i = 0; i < array1.GetLength(0); i++)
+    {
+        for (int j = 0; j < array1.GetLength(1); j++)
+        {
+            array1[i, j] = TempArray[TempIndex];
+            TempIndex++;
+        }
+    }
+    return (array1);
+}
 
 // ═════════════════════════════════════════════════════════════════════════════════════════════
 
@@ -421,172 +477,224 @@ restart:
         // Здесь объявляются функции которые программа выполнит при выборе того или иного пункта меню
         switch (choice)
         {
-            case 1:
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Задача 47. Задайте двумерный массив размером m×n, заполненный случайными вещественными числами.\n" +
-                "m = 3, n = 4.\n"+
-                "0,5 7 -2 -0,2\n"+
-                "1 -3,3 8 -9,9\n"+
-                "8 7,8 -7,1 9\n");
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Укажите размерность двумерного массива [m, n]");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Укажите размер [m]...");
-                int xm = GetNum();
-                Console.WriteLine("Укажите размер [n]...");
-                int xn = GetNum();
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
-                Console.WriteLine("Укажите начало диапазона...");
-                double xx = GetDouble();
-                Console.WriteLine("Укажите конец диапазона...");
-                double yy = GetDouble();
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Задайте количество цифр после запятой для массива...");
-                int Accuracy = GetNum();
-                double[,] array2d = new double[xm, xn];
-                array2d = Fill2DArrayDouble(array2d, xx, yy, Accuracy);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
-                $"Сгенерирован массив вещественных чисел, размером [{xm}, {xn}]\n\n");
-                Print2DArrayDouble(array2d);
-                Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
-                pause();
-                goto restart;
-            case 2:
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Задача 50. Напишите программу, которая на вход принимает позиции элемента в двумерном\n" +
-                "массиве, и возвращает значение этого элемента или же указание, что такого элемента нет.Например, задан массив:\n" +
-                "1 4 7 2\n" +
-                "5 9 2 3\n" +
-                "8 4 2 4\n" +
-                "17 -> такого числа в массиве нет\n");
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Укажите размерность двумерного массива [m, n]");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Укажите размер [m]...");
-                int xm1 = GetNum();
-                Console.WriteLine("Укажите размер [n]...");
-                int xn1 = GetNum();
-            EnterAgayn:
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
-                Console.WriteLine("Укажите начало диапазона...");
-                int xx1 = GetNum();
-                Console.WriteLine("Укажите конец диапазона...");
-                int yy1 = GetNum();
-                if (yy1 - xx1 <= xm1 * xn1)
+            case 1: // Действие при выборе 1-го пункта меню
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Диапазон генерируемых чисел меньше чем размер массива. Повторите ввод...");
-                    goto EnterAgayn;
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Задача 47. Задайте двумерный массив размером m×n, заполненный случайными вещественными числами.\n" +
+                    "m = 3, n = 4.\n" +
+                    "0,5 7 -2 -0,2\n" +
+                    "1 -3,3 8 -9,9\n" +
+                    "8 7,8 -7,1 9\n");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Укажите размерность двумерного массива [m, n]");
+                    Console.WriteLine("Укажите размер [m]...");
+                    int xm = GetNum();
+                    Console.WriteLine("Укажите размер [n]...");
+                    int xn = GetNum();
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
+                    Console.WriteLine("Укажите начало диапазона...");
+                    double xx = GetDouble();
+                    Console.WriteLine("Укажите конец диапазона...");
+                    double yy = GetDouble();
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Задайте количество цифр после запятой для массива...");
+                    int Accuracy = GetNum();
+                    double[,] array2d = new double[xm, xn];
+                    array2d = Fill2DArrayDouble(array2d, xx, yy, Accuracy);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
+                    $"Сгенерирован массив вещественных чисел, размером [{xm}, {xn}]\n\n");
+                    Print2DArrayDouble(array2d);
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
+                    pause();
+                    goto restart;
                 }
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Укажите позицию искомого элемента...");
-                Console.WriteLine("Позиция m...");
-                int Pos1 = GetNum();
-                Console.WriteLine("Позиция n...");
-                int Pos2 = GetNum();
-                int[,] array2d1 = Fill2dArray(xm1, xn1, xx1, yy1);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
-                $"Сгенерирован вещественных целых чисел, размером [{xm1}, {xn1}]\n\n");
-                Print2DArray(array2d1);
-                FindElement(array2d1, Pos1, Pos2);
-                Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
-                pause();
-                goto restart;
-            case 3:
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Задача 52. Задайте двумерный массив из целых чисел. Найдите среднее арифметическое элементов\n" +
-                "в каждом столбце.\n" +
-                "1 4 7 2\n" +
-                "5 9 2 3\n" +
-                "8 4 2 4\n" +
-                "Среднее арифметическое каждого столбца: 4,6; 5,6; 3,6; 3.\n");
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Укажите размерность двумерного массива [m, n]");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Укажите размер [m]...");
-                int xm2 = GetNum();
-                Console.WriteLine("Укажите размер [n]...");
-                int xn2 = GetNum();
-            EnterAgayn1:
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
-                Console.WriteLine("Укажите начало диапазона...");
-                int xx2 = GetNum();
-                Console.WriteLine("Укажите конец диапазона...");
-                int yy2 = GetNum();
-                if (yy2 - xx2 <= xm2 * xn2)
+            case 2: // Действие при выборе 2-го пункта меню
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Диапазон генерируемых чисел меньше чем размер массива. Повторите ввод...");
-                    goto EnterAgayn1;
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Задача 50. Напишите программу, которая на вход принимает позиции элемента в двумерном\n" +
+                    "массиве, и возвращает значение этого элемента или же указание, что такого элемента нет.Например, задан массив:\n" +
+                    "1 4 7 2\n" +
+                    "5 9 2 3\n" +
+                    "8 4 2 4\n" +
+                    "17 -> такого числа в массиве нет\n");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Укажите размерность двумерного массива [m, n]");
+                    Console.WriteLine("Укажите размер [m]...");
+                    int xm1 = GetNum();
+                    Console.WriteLine("Укажите размер [n]...");
+                    int xn1 = GetNum();
+                EnterAgayn:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
+                    Console.WriteLine("Укажите начало диапазона...");
+                    int xx1 = GetNum();
+                    Console.WriteLine("Укажите конец диапазона...");
+                    int yy1 = GetNum();
+                    if (yy1 - xx1 <= xm1 * xn1)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Диапазон генерируемых чисел меньше чем размер массива. Повторите ввод...");
+                        goto EnterAgayn;
+                    }
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Укажите позицию искомого элемента...");
+                    Console.WriteLine("Позиция m...");
+                    int Pos1 = GetNum();
+                    Console.WriteLine("Позиция n...");
+                    int Pos2 = GetNum();
+                    int[,] array2d1 = Fill2dArray(xm1, xn1, xx1, yy1);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
+                    $"Сгенерирован вещественных целых чисел, размером [{xm1}, {xn1}]\n\n");
+                    Print2DArray(array2d1);
+                    FindElement(array2d1, Pos1, Pos2);
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
+                    pause();
+                    goto restart;
                 }
-                int[,] array2d2 = Fill2dArray(xm2, xn2, xx2, yy2);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
-                $"Сгенерирован вещественных целых чисел, размером [{xm2}, {xn2}]\n\n");
-                Print2DArray(array2d2);
-                Console.ForegroundColor = ConsoleColor.Red;
-                PrintArray(AverageCoulm2DArray(array2d2));
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
-                pause();
-                goto restart;
-            case 4:
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Задача HARD SORT. Задайте двумерный массив из целых чисел. Количество строк и столбцов\n" +
-                "задается с клавиатуры. Отсортировать элементы по возрастанию слева направо и сверху вниз.\n" +
-                "Например, задан массив:\n" +
-                "1 4 7 2\n" +
-                "5 9 10 3\n" +
-                "После сортировки\n" +
-                "1 2 3 4\n" +
-                "5 7 9 10");
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Укажите размерность двумерного массива [m, n]");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Укажите размер [m]...");
-                int xm3 = GetNum();
-                Console.WriteLine("Укажите размер [n]...");
-                int xn3 = GetNum();
-            EnterAgayn2:
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
-                Console.WriteLine("Укажите начало диапазона...");
-                int xx3 = GetNum();
-                Console.WriteLine("Укажите конец диапазона...");
-                int yy3 = GetNum();
-                if (yy3 - xx3 <= xm3 * xn3)
+            case 3: // Действие при выборе 3-го пункта меню
                 {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Задача 52. Задайте двумерный массив из целых чисел. Найдите среднее арифметическое элементов\n" +
+                    "в каждом столбце.\n" +
+                    "1 4 7 2\n" +
+                    "5 9 2 3\n" +
+                    "8 4 2 4\n" +
+                    "Среднее арифметическое каждого столбца: 4,6; 5,6; 3,6; 3.\n");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Укажите размерность двумерного массива [m, n]");
+                    Console.WriteLine("Укажите размер [m]...");
+                    int xm2 = GetNum();
+                    Console.WriteLine("Укажите размер [n]...");
+                    int xn2 = GetNum();
+                EnterAgayn1:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
+                    Console.WriteLine("Укажите начало диапазона...");
+                    int xx2 = GetNum();
+                    Console.WriteLine("Укажите конец диапазона...");
+                    int yy2 = GetNum();
+                    if (yy2 - xx2 <= xm2 * xn2)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Диапазон генерируемых чисел меньше чем размер массива. Повторите ввод...");
+                        goto EnterAgayn1;
+                    }
+                    int[,] array2d2 = Fill2dArray(xm2, xn2, xx2, yy2);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
+                    $"Сгенерирован вещественных целых чисел, размером [{xm2}, {xn2}]\n\n");
+                    Print2DArray(array2d2);
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Диапазон генерируемых чисел меньше чем размер массива. Повторите ввод...");
-                    goto EnterAgayn2;
+                    PrintArray(AverageCoulm2DArray(array2d2));
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
+                    pause();
+                    goto restart;
                 }
-                int[,] array2d3 = Fill2dArray(xm3, xn3, xx3, yy3);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
-                $"Сгенерирован вещественных целых чисел, размером [{xm3}, {xn3}]\n\n");
-                Print2DArray(array2d3);
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Массив после сортировки по возрастанию:");
-                Print2DArray(Sort2DArray(array2d3));
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
-                pause();
-                goto restart;
-            case 5:
-                pause();
-                goto restart;
-            case 6:
-                ext();
-                goto restart;
+            case 4: // Действие при выборе 4-го пункта меню
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Задача HARD SORT. Задайте двумерный массив из целых чисел. Количество строк и столбцов\n" +
+                    "задается с клавиатуры. Отсортировать элементы по возрастанию слева направо и сверху вниз.\n" +
+                    "Например, задан массив:\n" +
+                    "1 4 7 2\n" +
+                    "5 9 10 3\n" +
+                    "После сортировки\n" +
+                    "1 2 3 4\n" +
+                    "5 7 9 10\n");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Укажите размерность двумерного массива [m, n]");
+                    Console.WriteLine("Укажите размер [m]...");
+                    int xm3 = GetNum();
+                    Console.WriteLine("Укажите размер [n]...");
+                    int xn3 = GetNum();
+                EnterAgayn2:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
+                    Console.WriteLine("Укажите начало диапазона...");
+                    int xx3 = GetNum();
+                    Console.WriteLine("Укажите конец диапазона...");
+                    int yy3 = GetNum();
+                    if (yy3 - xx3 <= xm3 * xn3)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Диапазон генерируемых чисел меньше чем размер массива. Повторите ввод...");
+                        goto EnterAgayn2;
+                    }
+                    int[,] array2d3 = Fill2dArray(xm3, xn3, xx3, yy3);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
+                    $"Сгенерирован вещественных целых чисел, размером [{xm3}, {xn3}]\n\n");
+                    Print2DArray(array2d3);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Массив после сортировки по возрастанию:");
+                    Print2DArray(Sort2DArray(array2d3));
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
+                    pause();
+                    goto restart;
+                }
+            case 5: // Действие при выборе 5-го пункта меню
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("задача 2 HARD необязательная. Сгенерировать массив случайных целых чисел размерностью m*n\n" +
+                    "(размерность вводим с клавиатуры) , причем чтоб количество элементов было четное. Вывести на экран\n" +
+                    "красивенько таблицей. Перемешать случайным образом элементы массива, причем чтобы каждый гарантированно\n" +
+                    "переместился на другое место (возможно для этого удобно будет использование множества) и выполнить\n" +
+                    "это за m*n / 2 итераций. То есть если массив три на четыре, то надо выполнить не более 6 итераций.\n" +
+                    "И далее в конце опять вывести на экран как таблицу.n");
+                WrongArraySize:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Укажите размерность двумерного массива [m, n], так чтобы общее количество элементов было четным.");
+                    Console.WriteLine("Укажите размер [m]...");
+                    int xm4 = GetNum();
+                    Console.WriteLine("Укажите размер [n]...");
+                    int xn4 = GetNum();
+                    if ((xm4 * xn4) % 2 != 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Количество элементов в массиве нечетное!\n Попробуйте еще раз...");
+                        goto WrongArraySize;
+                    }
+                EnterAgayn2:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
+                    Console.WriteLine("Укажите начало диапазона...");
+                    int xx4 = GetNum();
+                    Console.WriteLine("Укажите конец диапазона...");
+                    int yy4 = GetNum();
+                    if (yy4 - xx4 <= xm4 * xn4)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Диапазон генерируемых чисел меньше чем размер массива. Повторите ввод...");
+                        goto EnterAgayn2;
+                    }
+                    int[,] array2d4 = Fill2dArray(xm4, xn4, xx4, yy4);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
+                    $"Сгенерирован вещественных целых чисел, размером [{xm4}, {xn4}]\n\n");
+                    Print2DArray(array2d4);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Массив перемешан:");
+                    Print2DArray(Mix2DArray(array2d4));
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
+                    pause();
+                    goto restart;
+                }
+            case 6: // Действие при выборе 6-го пункта меню
+                {
+                    ext();
+                    goto restart;
+                }
         }
     }
     else goto restart;
