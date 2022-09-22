@@ -6,7 +6,7 @@ string[] ListMenu = {
     "  Задача 47: Двухмерный массив вещественных чисел.                        ",
     "  ЗАДАЧА 50: Найти элемент в двухмерном массиве.                          ",
     "  ЗАДАЧА 52: Среднее арифметическое колонок массива.                      ",
-    "  ЗАДАЧА HARD SORT:                                                       ",
+    "  ЗАДАЧА HARD SORT: Сортировка двухмерного массива.                       ",
     "  ЗАДАЧА HARD 2:                                                          ",
     "  ВЫХОД ИЗ ПРОГРАММЫ                                                      "};
 Console.ForegroundColor = ConsoleColor.White;
@@ -170,7 +170,35 @@ void PrintArray(double[] array1) // Вывести на экран массив
             }
         }
     }
-
+int[] arraySort(int[] array1, int parameter) // Сортировка массива parameter=1 по возрастанию parameter=0 по убыванию
+    {
+        int temp = 0;
+        for (int i = 0; i < array1.Length - 1; i++)
+        {
+            for (int i1 = i; i1 < array1.Length; i1++)
+            {
+                if (parameter == 1)
+                {
+                    if (array1[i] > array1[i1])
+                    {
+                        temp = array1[i];
+                        array1[i] = array1[i1];
+                        array1[i1] = temp;
+                    }
+                }
+                else
+                {
+                    if (array1[i] < array1[i1])
+                    {
+                        temp = array1[i];
+                        array1[i] = array1[i1];
+                        array1[i1] = temp;
+                    }
+                }
+            }
+        }
+        return (array1);
+    }
 // ═══════════════════════════════ ДОМАШНЕЕ ЗАДАНИЕ ═══════════════════════════════
 
 // 1 Задача //
@@ -321,6 +349,33 @@ double [] AverageCoulm2DArray(int [,] array1)
 
 
 // 4 Задача //
+int [,] Sort2DArray(int[,] array1)
+    {
+        int [] sorting = new int [array1.GetLength(0) * array1.GetLength(1)];
+        int sortingi = 0;
+        for (int i = 0; i < array1.GetLength(0); i++)
+        {
+            for (int j = 0; j < array1.GetLength(1); j++)
+            {
+                sorting[sortingi] = array1[i, j];
+                sortingi++;
+            }
+        }
+        int ii = 0;
+        sorting = arraySort(sorting, 1);
+        for (int i = 0; i < array1.GetLength(0); i++)
+        {
+            for (int j = 0; j < array1.GetLength(1); j++)
+            {
+                array1[i, j] = sorting[ii];
+                ii++;
+            }
+        }
+        return (array1);
+    }
+
+// 5 Задача //
+
 
 // ═════════════════════════════════════════════════════════════════════════════════════════════
 
@@ -477,9 +532,45 @@ void main()
                     Console.ForegroundColor = ConsoleColor.Red;
                     PrintArray(AverageCoulm2DArray(array2d2));
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");                    pause();
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
+                    pause();
                     goto restart;
                 case 4:
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Задача 50. Напишите программу, которая на вход принимает позиции элемента в двумерном\n"+
+                    "массиве, и возвращает значение этого элемента или же указание, что такого элемента нет."+
+                    "Например, задан массив:");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Укажите размерность двумерного массива [m, n]");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Укажите размер [m]...");
+                    int xm3 = GetNum();
+                    Console.WriteLine("Укажите размер [n]...");
+                    int xn3 = GetNum();
+                    EnterAgayn2:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
+                    Console.WriteLine("Укажите начало диапазона...");
+                    int xx3 = GetNum();
+                    Console.WriteLine("Укажите конец диапазона...");
+                    int yy3 = GetNum();
+                    if (yy3 - xx3 <= xm3 * xn3)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Диапазон генерируемых чисел меньше чем размер массива. Повторите ввод...");
+                        goto EnterAgayn2;
+                    }            
+                    int[,] array2d3 = Fill2dArray(xm3, xn3, xx3, yy3);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n" +
+                    $"Сгенерирован вещественных целых чисел, размером [{xm3}, {xn3}]\n\n");
+                    Print2DArray(array2d3);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Массив после сортировки по возрастанию:");
+                    Print2DArray(Sort2DArray(array2d3));
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
                     pause();
                     goto restart;
                 case 5:
