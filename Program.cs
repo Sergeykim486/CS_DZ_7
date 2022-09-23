@@ -102,14 +102,14 @@ void pause() // Функция паузы, для чтения результа�
     "  ╚═════════════════════════════════════════════════════╝\n");
     ConsoleKeyInfo key;
     key = Console.ReadKey();
-    try
-    {
+    // try
+    // {
         main();
-    }
-    catch
-    {
-        ErrorCatch();
-    }
+    // }
+    // catch
+    // {
+    //     ErrorCatch();
+    // }
 }
 void ext() // Функция задает пользователю вопрос хочет ли он выйти из программы и закрывает ее если ответ да
 {
@@ -370,21 +370,46 @@ int[,] Sort2DArray(int[,] array1)
     return (array1);
 }
 // 5 Задача //
-int FindArrayElement(int[] array1, int WhatToFind)
+int iter = 0;
+void ChangeElements(int[] array1, int[] changed, int index, int rand, int emp)
+{
+    changed[index - emp] = index;
+    if (index >= array1.Length / 2)
+    {
+        changed[index - array1.Length / 2] = rand;
+    }
+    else changed[index - emp + array1.Length / 2] = rand;
+    int tmp = array1[index];
+    array1[index] = array1[rand];
+    array1[rand] = tmp;
+    Console.WriteLine();
+    for (int i = 0; i < changed.Length; i++)
+    {
+        if (i == changed.Length - 1) Console.Write($" {changed[i]}.\n");
+        else Console.Write($" {changed[i]}.");
+    }
+    Console.WriteLine($"Поменялись местами объекты {index} -->> {rand}");
+    iter++;
+}
+int FindArrayElement(int[] array1, int find)
 {
     int result = 0;
     for (int i = 0; i < array1.Length; i++)
     {
-        if (WhatToFind == array1[i]) result = 1;
+        if (find == array1[i])
+        {
+            result = 1;
+        }
     }
-    Console.WriteLine($"Searching {WhatToFind} - Find {result}");
+    Console.WriteLine($"Поиск объекта {find} --->>>      объект {result}");
     return (result);
-
 }
+
 int[,] Mix2DArray(int[,] array1)
 {
     int[] TempArray = new int[array1.GetLength(0) * array1.GetLength(1)];
     int TempIndex = 0;
+    int emptyString = 0;
     for (int i = 0; i < array1.GetLength(0); i++)
     {
         for (int j = 0; j < array1.GetLength(1); j++)
@@ -394,27 +419,28 @@ int[,] Mix2DArray(int[,] array1)
         }
     }
     int[] Changed = new int[TempArray.Length];
-    for (int tmpi = 0; tmpi < TempArray.Length / 2; tmpi++)
+    iter = 0;
+    Random rnd1 = new Random();
+    // Console.WriteLine($"{TempArray.Length}   {Changed.Length}");
+    for (int tmpi = 0; tmpi < TempArray.Length; tmpi++)
     {
-        Random rnd = new Random();
-        Console.WriteLine($"Строка {tmpi}");
-    rnd1aAgayn:
-        Console.Write("rnd1 ");
-        int rnd1 = Convert.ToInt32(rnd.Next(TempArray.Length));
-        if (FindArrayElement(Changed, rnd1) == 1) goto rnd1aAgayn;
-        Changed[tmpi] = rnd1;
-    rnd2aAgayn:
-        Console.Write("rnd2 ");
-        int rnd2 = Convert.ToInt32(rnd.Next(TempArray.Length));
-        if (FindArrayElement(Changed, rnd2) == 1) goto rnd2aAgayn;
-
-        Console.WriteLine($"{rnd1} <-> {rnd2}");
-        Changed[tmpi + TempArray.Length / 2] = rnd2;
-        Console.WriteLine($"Saved {Changed[tmpi + TempArray.Length / 2]} - to array");
-        int tmp = TempArray[rnd1];
-        TempArray[rnd1] = TempArray[rnd2];
-        TempArray[rnd2] = tmp;
-        Console.WriteLine($"       changed  {tmpi} <----> {tmpi + TempArray.Length / 2}");
+        Console.WriteLine($"Строка [{tmpi}] > ");
+        Repeat:
+        int r = rnd1.Next(0, TempArray.Length);
+        if (tmpi == 0) ChangeElements(TempArray, Changed, tmpi, r, emptyString);
+        else if (FindArrayElement(Changed, tmpi) == 1)
+        {
+            Console.WriteLine("Пропущенная строка");
+            emptyString = emptyString + 1;
+        }
+        else 
+        {
+            GenNum:
+            int rnd = rnd1.Next(0, TempArray.Length);
+            if (rnd == tmpi) goto GenNum;
+            else if (FindArrayElement(Changed, rnd) == 1) goto GenNum;
+            else ChangeElements(TempArray, Changed, tmpi, rnd, emptyString);
+        }
     }
     TempIndex = 0;
     for (int i = 0; i < array1.GetLength(0); i++)
@@ -683,9 +709,10 @@ restart:
                     $"Сгенерирован вещественных целых чисел, размером [{xm4}, {xn4}]\n\n");
                     Print2DArray(array2d4);
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Массив перемешан:");
+                    Console.WriteLine($"Массив перемешан:");
                     Print2DArray(Mix2DArray(array2d4));
                     Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Пройдено {iter} итераций.");
                     Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
                     pause();
                     goto restart;
@@ -704,12 +731,12 @@ restart:
 
 // ═══════════════════════════════ Запуск обработки меню и выбранного элемента ═══════════════════════════════
 
-try
-{
+// try
+// {
     main();
-}
+// }
 
-catch
-{
-    ErrorCatch();
-}
+// catch
+// {
+//     ErrorCatch();
+// }
