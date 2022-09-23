@@ -371,25 +371,12 @@ int[,] Sort2DArray(int[,] array1)
 }
 // 5 Задача //
 int iter = 0;
-void ChangeElements(int[] array1, int[] changed, int index, int rand, int emp)
+void ChangeElements(int[] array1, int index, int rand)
 {
-    changed[index - emp] = index;
-    if (index >= array1.Length / 2)
-    {
-        changed[index - array1.Length / 2] = rand;
-    }
-    else changed[index - emp + array1.Length / 2] = rand;
     int tmp = array1[index];
     array1[index] = array1[rand];
     array1[rand] = tmp;
-    Console.WriteLine();
-    for (int i = 0; i < changed.Length; i++)
-    {
-        if (i == changed.Length - 1) Console.Write($" {changed[i]}.\n");
-        else Console.Write($" {changed[i]}.");
-    }
-    Console.WriteLine($"Поменялись местами объекты {index} -->> {rand}");
-    iter++;
+    Console.WriteLine($"{index} заменен на {rand}");
 }
 int FindArrayElement(int[] array1, int find)
 {
@@ -401,15 +388,12 @@ int FindArrayElement(int[] array1, int find)
             result = 1;
         }
     }
-    Console.WriteLine($"Поиск объекта {find} --->>>      объект {result}");
     return (result);
 }
-
 int[,] Mix2DArray(int[,] array1)
 {
     int[] TempArray = new int[array1.GetLength(0) * array1.GetLength(1)];
     int TempIndex = 0;
-    int emptyString = 0;
     for (int i = 0; i < array1.GetLength(0); i++)
     {
         for (int j = 0; j < array1.GetLength(1); j++)
@@ -421,25 +405,21 @@ int[,] Mix2DArray(int[,] array1)
     int[] Changed = new int[TempArray.Length];
     iter = 0;
     Random rnd1 = new Random();
-    // Console.WriteLine($"{TempArray.Length}   {Changed.Length}");
-    for (int tmpi = 0; tmpi < TempArray.Length; tmpi++)
+    for (int ti = 0; ti < Changed.Length; ti = ti + 2)
     {
-        Console.WriteLine($"Строка [{tmpi}] > ");
-        Repeat:
+        GenAgayn:
         int r = rnd1.Next(0, TempArray.Length);
-        if (tmpi == 0) ChangeElements(TempArray, Changed, tmpi, r, emptyString);
-        else if (FindArrayElement(Changed, tmpi) == 1)
+        Changed[ti] = ti;
+        if (r == ti) goto GenAgayn;
+        else if (ti == 0)
         {
-            Console.WriteLine("Пропущенная строка");
-            emptyString = emptyString + 1;
+            ChangeElements(TempArray, ti, r);
+            Changed[ti + 1] = r;
         }
-        else 
+        else if (FindArrayElement(Changed, r) == 0)
         {
-            GenNum:
-            int rnd = rnd1.Next(0, TempArray.Length);
-            if (rnd == tmpi) goto GenNum;
-            else if (FindArrayElement(Changed, rnd) == 1) goto GenNum;
-            else ChangeElements(TempArray, Changed, tmpi, rnd, emptyString);
+            ChangeElements(TempArray, ti, r);
+            Changed[ti + 1] = r;
         }
     }
     TempIndex = 0;
