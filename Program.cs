@@ -7,7 +7,7 @@ string[] ListMenu = {
     "  ЗАДАЧА 50: Найти элемент в двухмерном массиве.                          ",
     "  ЗАДАЧА 52: Среднее арифметическое колонок массива.                      ",
     "  ЗАДАЧА HARD SORT: Сортировка двухмерного массива.                       ",
-    "  ЗАДАЧА HARD 2:                                                          ",
+    "  ЗАДАЧА HARD 2: Перемешать двумерный массив                              ",
     "  ВЫХОД ИЗ ПРОГРАММЫ                                                      "};
 Console.ForegroundColor = ConsoleColor.White;
 Console.BackgroundColor = ConsoleColor.Black;
@@ -102,14 +102,14 @@ void pause() // Функция паузы, для чтения результа�
     "  ╚═════════════════════════════════════════════════════╝\n");
     ConsoleKeyInfo key;
     key = Console.ReadKey();
-    // try
-    // {
+    try
+    {
         main();
-    // }
-    // catch
-    // {
-    //     ErrorCatch();
-    // }
+    }
+    catch
+    {
+        ErrorCatch();
+    }
 }
 void ext() // Функция задает пользователю вопрос хочет ли он выйти из программы и закрывает ее если ответ да
 {
@@ -370,13 +370,15 @@ int[,] Sort2DArray(int[,] array1)
     return (array1);
 }
 // 5 Задача //
-int iter = 0;
-void ChangeElements(int[] array1, int index, int rand)
+void ChangeElements(int[] array1, int index, int rand, int [,] array2)
 {
     int tmp = array1[index];
     array1[index] = array1[rand];
     array1[rand] = tmp;
-    Console.WriteLine($"{index} заменен на {rand}");
+    // ЛОГ ПО СОРТИРОВКЕ
+    Console.ForegroundColor = ConsoleColor.Magenta;
+    Console.WriteLine($"Элемент [{index / array2.GetLength(0)}, {index % array2.GetLength(0)}] = {array1[rand]}"+
+    $" заменен на [{rand / array2.GetLength(0)}, {rand % array2.GetLength(0)}] = {array1[index]}\t");
 }
 int FindArrayElement(int[] array1, int find)
 {
@@ -403,7 +405,6 @@ int[,] Mix2DArray(int[,] array1)
         }
     }
     int[] Changed = new int[TempArray.Length];
-    iter = 0;
     Random rnd1 = new Random();
     for (int ti = 0; ti < Changed.Length; ti = ti + 2)
     {
@@ -413,14 +414,15 @@ int[,] Mix2DArray(int[,] array1)
         if (r == ti) goto GenAgayn;
         else if (ti == 0)
         {
-            ChangeElements(TempArray, ti, r);
+            ChangeElements(TempArray, ti, r, array1);
             Changed[ti + 1] = r;
         }
         else if (FindArrayElement(Changed, r) == 0)
         {
-            ChangeElements(TempArray, ti, r);
+            ChangeElements(TempArray, ti, r, array1);
             Changed[ti + 1] = r;
         }
+        else goto GenAgayn;
     }
     TempIndex = 0;
     for (int i = 0; i < array1.GetLength(0); i++)
@@ -499,11 +501,18 @@ restart:
                     Console.WriteLine("Укажите размер [n]...");
                     int xn = GetNum();
                     Console.ForegroundColor = ConsoleColor.Cyan;
+                EnterAgayn0:
                     Console.WriteLine("В каком диапазоне будут генерироваться числа для заполнения массива?");
                     Console.WriteLine("Укажите начало диапазона...");
                     double xx = GetDouble();
                     Console.WriteLine("Укажите конец диапазона...");
                     double yy = GetDouble();
+                    if (yy - xx <= xm * xn)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Диапазон генерируемых чисел меньше чем размер массива. Повторите ввод...");
+                        goto EnterAgayn0;
+                    }
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("Задайте количество цифр после запятой для массива...");
                     int Accuracy = GetNum();
@@ -692,7 +701,6 @@ restart:
                     Console.WriteLine($"Массив перемешан:");
                     Print2DArray(Mix2DArray(array2d4));
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"Пройдено {iter} итераций.");
                     Console.Write("\n═══════════════════════════════════════════════════════════════════════════════════════════\n");
                     pause();
                     goto restart;
@@ -711,12 +719,12 @@ restart:
 
 // ═══════════════════════════════ Запуск обработки меню и выбранного элемента ═══════════════════════════════
 
-// try
-// {
+try
+{
     main();
-// }
+}
 
-// catch
-// {
-//     ErrorCatch();
-// }
+catch
+{
+    ErrorCatch();
+}
